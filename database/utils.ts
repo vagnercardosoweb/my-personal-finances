@@ -9,7 +9,10 @@ const createdAtName = process.env.DB_CREATED_AT_NAME || 'created_at';
 const updatedAtName = process.env.DB_UPDATED_AT_NAME || 'updated_at';
 const deletedAtName = process.env.DB_DELETED_AT_NAME || 'deleted_at';
 
-export const addDefaultColumns = ({ softDelete = true, mergeColumns }: Params) => ({
+export const addDefaultColumns = ({
+	softDelete = true,
+	mergeColumns,
+}: Params) => ({
 	id: {
 		type: DataTypes.UUID,
 		unique: true,

@@ -27,7 +27,7 @@ class Logger implements ILogger {
 			format.timestamp(),
 			format.printf(({ level, message, timestamp, id, ...metadata }) => {
 				const regex = new RegExp(Object.keys(LogLevel).join('|'), 'ig');
-				const levelToUpper = level.replace(regex, String.prototype.toUpperCase);
+				const levelToUpper = level.replace(regex, (n) => n.toUpperCase());
 
 				return JSON.stringify({
 					id,
