@@ -51,6 +51,8 @@ export default {
 		});
 
 		await queryInterface.addIndex(TableNames.USER, ['email']);
+		await queryInterface.addIndex(TableNames.USER, ['code_to_invite']);
+		await queryInterface.addIndex(TableNames.USER, ['birth_date']);
 	},
 	down: async (queryInterface: QueryInterface) => {
 		await queryInterface.dropTable(TableNames.USER, { cascade: true });

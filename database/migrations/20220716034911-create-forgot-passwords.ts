@@ -60,7 +60,7 @@ export default {
 		await queryInterface.addConstraint(tableName, {
 			type: 'unique',
 			fields: ['user_id', 'token_uuid', 'token_random'],
-			// name: `${tableName}_unique_user_id_token_uuid_token_random`,
+			name: `${tableName}_user_id_token_uuid_token_random_uk`,
 		});
 	},
 

@@ -24,8 +24,8 @@ export default {
 				onDelete: 'CASCADE',
 				onUpdate: 'CASCADE',
 			},
-			success: {
-				type: DataTypes.BOOLEAN,
+			state: {
+				type: DataTypes.STRING(8),
 				defaultValue: true,
 				allowNull: false,
 			},
@@ -57,7 +57,14 @@ export default {
 		await queryInterface.addIndex(tableName, ['id']);
 		await queryInterface.addIndex(tableName, ['profile_id']);
 		await queryInterface.addIndex(tableName, ['created_at']);
-		await queryInterface.addIndex(tableName, ['success']);
+		await queryInterface.addIndex(tableName, ['state']);
+
+		await queryInterface.addConstraint(tableName, {
+			type: 'check',
+			name: `${tableName}_state_check`,
+			fields: ['state'],
+			where: { state: ['success', 'failed'] },
+		});
 	},
 
 	down: async (queryInterface: QueryInterface) => {
