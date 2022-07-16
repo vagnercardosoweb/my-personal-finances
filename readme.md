@@ -12,14 +12,19 @@
 
 ## Run Project
 
-It is necessary to have docker and docker-compose installed on your machine, and for that you just access
-the [official documentation](https://docs.docker.com/engine/install/) for installation and select your operating system,
+It is necessary to have docker and docker-compose installed on your machine, and
+for that you just access
+the [official documentation](https://docs.docker.com/engine/install/) for
+installation and select your operating system,
 after that just run the commands below.
 
-- Clone the repository `git clone git@github.com:vagnercardosoweb/typescript-with-jest.git -b main`
-- Access the folder `cd typescript-with-jest`
+- Clone the
+  repository `git clone git@github.com:vagnercardosoweb/my-personal-finances.git -b main`
+- Access the folder `cd my-personal-finances`
 - Copy `.env.example` to `.env` and change the values according to your needs.
 - Run server with docker `npm run dev:docker`
 - Run migration with docker `docker exec app.server npm run db:migrate`
+- Run seeders with docker `docker exec app.server npm run db:seed`
 
-after step up your server will be online on host [http://localhost:3333](http://localhost:3333)
+after step up your server will be online on
+host [http://localhost:3333](http://localhost:3333)
