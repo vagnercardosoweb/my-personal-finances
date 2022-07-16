@@ -1,0 +1,10 @@
+node_modules
+dist
+.idea
+.env*
+!.env.example
+.vscode
+.npm
+database-compiled
+aws-infra
+core
