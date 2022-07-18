@@ -1,6 +1,11 @@
 export enum TableNames {
-	USER = 'users',
-	PROFILE = 'profiles',
-	FORGOT_PASSWORDS = 'forgot_passwords',
-	ACCESS_LOG = 'access_logs',
+  USER = 'users',
+  WALLET = 'wallets',
+  INVOICE = 'invoices',
+  INVOICE_SCHEDULE = 'invoice_schedules',
+  CATEGORY = 'categories',
+  TAGS = 'tags',
+  FORGOT_PASSWORDS = 'forgot_passwords',
+  ACCESS_LOG = 'access_logs',
+  INVITED_BY_USER = 'invited_by_users',
 }
