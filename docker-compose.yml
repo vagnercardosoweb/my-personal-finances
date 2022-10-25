@@ -1,7 +1,7 @@
 version: '3'
 
 networks:
-  mfp.network:
+  app.network:
     driver: bridge
 
 services:
@@ -9,8 +9,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.local
-    container_name: mfp.server
+    container_name: app.server
     working_dir: /home/node/app
+    env_file: .env
     entrypoint: dockerize -wait tcp://postgres:5432 -wait tcp://redis:6379 -timeout 60s .bin/docker-entrypoint.sh
     tty: true
     depends_on:
@@ -20,7 +21,7 @@ services:
       - .:/home/node/app
       - /home/node/app/node_modules
     networks:
-      - mfp.network
+      - app.network
     ports:
       - "${LOCAL_PORT:-3333}:${PORT:-3333}"
       - "${DEBUG_PORT:-9229}:9229"
@@ -29,12 +30,13 @@ services:
 
   postgres:
     image: bitnami/postgresql:14
-    container_name: mfp.postgres
+    container_name: app.postgres
     tty: true
+    env_file: .env
     volumes:
-      - mfp.volume.postgres:/bitnami/postgresql
+      - app.volume.postgres:/bitnami/postgresql
     networks:
-      - mfp.network
+      - app.network
     ports:
       - "${DB_PORT:-5432}:5432"
     environment:
@@ -44,12 +46,13 @@ services:
 
   redis:
     image: bitnami/redis:latest
-    container_name: mfp.redis
+    container_name: app.redis
     tty: true
+    env_file: .env
     volumes:
-      - mfp.volume.redis:/bitnami/redis/data
+      - app.volume.redis:/bitnami/redis/data
     networks:
-      - mfp.network
+      - app.network
     ports:
       - "${REDIS_PORT:-6379}:6379"
     environment:
@@ -57,5 +60,5 @@ services:
       - ALLOW_EMPTY_PASSWORD=no
 
 volumes:
-  mfp.volume.redis:
-  mfp.volume.postgres:
+  app.volume.redis:
+  app.volume.postgres:

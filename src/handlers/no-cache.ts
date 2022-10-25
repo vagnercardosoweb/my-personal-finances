@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-export const noCacheMiddleware = (
+export const noCacheHandler = (
   _request: Request,
   response: Response,
   next: NextFunction,
@@ -12,6 +12,5 @@ export const noCacheMiddleware = (
     'Cache-Control',
     'no-store, no-cache, must-revalidate, proxy-revalidate',
   );
-
   return next();
 };
