@@ -21,7 +21,7 @@ export default {
             },
           },
           installment_number: {
-            type: DataTypes.SMALLINT,
+            type: DataTypes.SMALLINT({ unsigned: true }),
             allowNull: false,
             defaultValue: 1,
           },

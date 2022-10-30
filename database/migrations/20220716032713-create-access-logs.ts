@@ -40,7 +40,7 @@ export default {
       },
       ip_address: {
         type: DataTypes.ARRAY(DataTypes.STRING(39)),
-        allowNull: true,
+        allowNull: false,
         defaultValue: [],
       },
       user_agent: {

@@ -12,7 +12,7 @@ export type Route = {
   public?: boolean;
 };
 
-const configRoutes: Route[] = [
+const appRoutes: Route[] = [
   {
     path: '/',
     public: true,
@@ -37,4 +37,4 @@ const configRoutes: Route[] = [
   },
 ];
 
-export default configRoutes;
+export default appRoutes;

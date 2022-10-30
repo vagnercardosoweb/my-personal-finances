@@ -10,6 +10,17 @@ export default {
       addDefaultColumns({
         softDelete: true,
         mergeColumns: {
+          user_id: {
+            type: DataTypes.UUID,
+            allowNull: true,
+            defaultValue: null,
+            onDelete: 'RESTRICT',
+            onUpdate: 'CASCADE',
+            references: {
+              key: 'id',
+              model: TableNames.USER,
+            },
+          },
           parent_id: {
             type: DataTypes.UUID,
             allowNull: true,
@@ -22,18 +33,13 @@ export default {
             },
           },
           name: {
-            type: DataTypes.UUID,
+            type: DataTypes.STRING(120),
             allowNull: false,
           },
-          type: {
-            type: DataTypes.STRING(10),
+          sort_order: {
+            type: DataTypes.SMALLINT({ unsigned: true }),
             allowNull: false,
-            defaultValue: 'income',
-          },
-          position: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            defaultValue: 0,
+            defaultValue: 1,
           },
         },
       }),
@@ -45,15 +51,8 @@ export default {
       queryInterface,
     });
 
-    await queryInterface.addIndex(TableNames.CATEGORY, ['type']);
-    await queryInterface.addIndex(TableNames.CATEGORY, ['position']);
-
-    await queryInterface.addConstraint(TableNames.CATEGORY, {
-      type: 'check',
-      fields: ['type'],
-      where: { type: ['income', 'expense'] },
-      name: `${TableNames.CATEGORY}_type_ck`,
-    });
+    await queryInterface.addIndex(TableNames.CATEGORY, ['user_id']);
+    await queryInterface.addIndex(TableNames.CATEGORY, ['sort_order']);
   },
   down: async (queryInterface: QueryInterface) => {
     await queryInterface.dropTable(TableNames.CATEGORY, { cascade: true });

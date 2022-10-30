@@ -50,13 +50,14 @@ export default {
             allowNull: false,
             defaultValue: 0,
           },
-          repeatable: {
-            type: DataTypes.STRING(10),
+          repeatable_in_days: {
+            type: DataTypes.SMALLINT({ unsigned: true }),
             allowNull: false,
-            defaultValue: false,
+            defaultValue: 0,
+            comment: '0 = never repeats and above 1 repeat based on the days',
           },
           total_installments: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.SMALLINT({ unsigned: true }),
             allowNull: false,
             defaultValue: 1,
           },
@@ -79,7 +80,13 @@ export default {
       queryInterface,
     });
 
+    await queryInterface.addIndex(TableNames.INVOICE, ['user_id']);
     await queryInterface.addIndex(TableNames.INVOICE, ['wallet_id']);
+    await queryInterface.addIndex(TableNames.INVOICE, ['category_id']);
+    await queryInterface.addIndex(TableNames.INVOICE, ['type']);
+    await queryInterface.addIndex(TableNames.INVOICE, ['repeatable_in_days']);
+    await queryInterface.addIndex(TableNames.INVOICE, ['start_at']);
+    await queryInterface.addIndex(TableNames.INVOICE, ['end_at']);
 
     await queryInterface.addConstraint(TableNames.INVOICE, {
       type: 'check',
@@ -88,21 +95,21 @@ export default {
       name: `${TableNames.INVOICE}_type_ck`,
     });
 
-    await queryInterface.addConstraint(TableNames.INVOICE, {
-      type: 'check',
-      fields: ['repeatable'],
-      name: `${TableNames.CATEGORY}_repeatable_ck`,
-      where: {
-        repeatable: [
-          'single',
-          'daily',
-          'weekly',
-          'biweekly',
-          'monthly',
-          'yearly',
-        ],
-      },
-    });
+    // await queryInterface.addConstraint(TableNames.INVOICE, {
+    //   type: 'check',
+    //   fields: ['repeatable'],
+    //   name: `${TableNames.CATEGORY}_repeatable_ck`,
+    //   where: {
+    //     repeatable: [
+    //       'single',
+    //       'daily',
+    //       'weekly',
+    //       'biweekly',
+    //       'monthly',
+    //       'yearly',
+    //     ],
+    //   },
+    // });
   },
   down: async (queryInterface: QueryInterface) => {
     await queryInterface.dropTable(TableNames.INVOICE, { cascade: true });

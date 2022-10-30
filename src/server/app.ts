@@ -6,7 +6,6 @@ import helmet from 'helmet';
 import http from 'http';
 import morgan from 'morgan';
 
-import configRoutes from '@/config/routes';
 import { HttpMethod, NodeEnv } from '@/enums';
 import {
   checkAccessByRouteHandler,
@@ -19,6 +18,7 @@ import {
   notFoundHandler,
   routeWithTokenHandler,
 } from '@/handlers';
+import appRoutes from '@/server/routes';
 import { Env, Logger } from '@/shared';
 
 export class App {
@@ -63,12 +63,12 @@ export class App {
       const routePath = `${directory}/${dir.name}/routes.ts`;
       try {
         if (!(await fs.stat(routePath))) continue;
-        configRoutes.push(...(await import(routePath)).default);
+        appRoutes.push(...(await import(routePath)).default);
       } catch (e: any) {
         Logger.warn(`error dynamic route`, { stack: e.stack });
       }
     }
-    for await (const route of configRoutes) {
+    for await (const route of appRoutes) {
       route.method = route.method ?? HttpMethod.GET;
       route.handlers = route.handlers ?? [];
       route.public = route.public ?? false;

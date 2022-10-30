@@ -24,6 +24,7 @@ interface Response {
   metadata: Metadata;
   originalError?: any;
   errorId: string;
+  showInLogger: boolean;
 }
 
 export const parseToObject = (error: any): Response => {
@@ -56,5 +57,6 @@ export const parseToObject = (error: any): Response => {
     originalError: error?.originalError,
     metadata: { ...metadata, validators },
     stack: error?.stack?.split('\n'),
+    showInLogger: error?.showInLogger || true,
   };
 };

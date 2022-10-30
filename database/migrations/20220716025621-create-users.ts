@@ -42,7 +42,7 @@ export default {
             defaultValue: null,
           },
           password: {
-            type: DataTypes.STRING(100),
+            type: DataTypes.STRING(150),
             allowNull: false,
           },
         },
