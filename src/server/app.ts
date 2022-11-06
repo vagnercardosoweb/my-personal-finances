@@ -5,6 +5,7 @@ import fs from 'fs/promises';
 import helmet from 'helmet';
 import http from 'http';
 import morgan from 'morgan';
+import path from 'path';
 
 import { HttpMethod, NodeEnv } from '@/enums';
 import {
@@ -40,13 +41,13 @@ export class App {
     this.app.use(express.json() as RequestHandler);
     this.app.use(express.urlencoded({ extended: true }) as RequestHandler);
     this.app.use(cookieParser(Env.required('APP_KEY')));
+    this.app.use(helmet() as RequestHandler);
     if (Env.required('NODE_ENV') !== NodeEnv.TEST) {
-      this.app.use(helmet() as RequestHandler);
       this.app.use(morgan('combined'));
-      this.app.use(corsHandler);
-      this.app.use(methodOverrideHandler);
-      this.app.use(requestUuidHandler);
     }
+    this.app.use(corsHandler);
+    this.app.use(methodOverrideHandler);
+    this.app.use(requestUuidHandler);
     this.app.use(extractTokenHandler);
   }
 
@@ -56,13 +57,13 @@ export class App {
   }
 
   public async registerRoutes() {
-    const directory = `${__dirname}/../modules`;
+    const directory = path.resolve(__dirname, '..', 'modules');
     const modules = await fs.opendir(directory);
     for await (const dir of modules) {
       if (!dir.isDirectory()) continue;
-      const routePath = `${directory}/${dir.name}/routes.ts`;
+      const routePath = path.resolve(directory, dir.name, 'routes');
+      Logger.info(`register route path ${routePath}`);
       try {
-        if (!(await fs.stat(routePath))) continue;
         appRoutes.push(...(await import(routePath)).default);
       } catch (e: any) {
         Logger.warn(`error dynamic route`, { stack: e.stack });

@@ -27,7 +27,7 @@ interface Response {
   showInLogger: boolean;
 }
 
-export const parseToObject = (error: any): Response => {
+export const parseErrorToObject = (error: any): Response => {
   let message = error?.message || error?.toString();
   let statusCode = error?.statusCode ?? HttpStatusCode.BAD_REQUEST;
   let validators: ValidatorError[] | undefined;
@@ -57,6 +57,6 @@ export const parseToObject = (error: any): Response => {
     originalError: error?.originalError,
     metadata: { ...metadata, validators },
     stack: error?.stack?.split('\n'),
-    showInLogger: error?.showInLogger || true,
+    showInLogger: error?.showInLogger ?? true,
   };
 };

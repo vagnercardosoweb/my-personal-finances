@@ -1,19 +1,14 @@
 import { DataTypes, literal, QueryInterface } from 'sequelize';
 
 import { TableNames } from '../table-names';
+import { makeColumnUuid } from '../utils';
 
 const tableName = TableNames.ACCESS_LOG;
 
 export default {
   up: async (queryInterface: QueryInterface) => {
     await queryInterface.createTable(tableName, {
-      id: {
-        type: DataTypes.UUID,
-        unique: true,
-        allowNull: false,
-        primaryKey: true,
-        defaultValue: literal('uuid_generate_v4()'),
-      },
+      id: makeColumnUuid(),
       user_id: {
         type: DataTypes.UUID,
         allowNull: false,
