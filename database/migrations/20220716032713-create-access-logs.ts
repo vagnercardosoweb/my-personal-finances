@@ -21,7 +21,7 @@ export default {
       },
       state: {
         type: DataTypes.STRING(8),
-        defaultValue: true,
+        defaultValue: 'success',
         allowNull: false,
       },
       platform: {
