@@ -59,11 +59,11 @@ export default {
     await queryInterface.addIndex(TableNames.INVOICE_SCHEDULE, ['paid_at']);
     await queryInterface.addIndex(TableNames.INVOICE_SCHEDULE, ['unpaid_at']);
 
-    await queryInterface.addConstraint(TableNames.INVOICE, {
+    await queryInterface.addConstraint(TableNames.INVOICE_SCHEDULE, {
       type: 'check',
       fields: ['status'],
       where: { status: ['paid', 'unpaid'] },
-      name: `${TableNames.CATEGORY}_status_ck`,
+      name: `${TableNames.INVOICE_SCHEDULE}_status_ck`,
     });
   },
   down: async (queryInterface: QueryInterface) => {
