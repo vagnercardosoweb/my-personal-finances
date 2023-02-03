@@ -14,7 +14,7 @@ export default {
         allowNull: false,
         references: {
           key: 'id',
-          model: tableName,
+          model: TableNames.USER,
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
