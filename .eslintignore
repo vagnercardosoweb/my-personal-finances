@@ -1,5 +1,0 @@
-dist/
-node_modules/
-.bin/
-.husky/
-/**/*.js
