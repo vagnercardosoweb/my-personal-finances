@@ -1,0 +1,61 @@
+version: '3'
+
+networks:
+  finances.network:
+    driver: bridge
+
+volumes:
+  finances.redis:
+  finances.postgres:
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    container_name: finances.api
+    restart: always
+    tty: true
+    env_file: .env.local
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - .:/go/src
+    networks:
+      - finances.network
+    ports:
+      - "${LOCAL_PORT:-3301}:3333"
+    environment:
+      - APP_ENV=${APP_ENV:-local}
+
+  postgres:
+    image: bitnami/postgresql:15
+    container_name: finances.postgres
+    tty: true
+    env_file: .env.local
+    volumes:
+      - finances.postgres:/bitnami/postgresql
+    networks:
+      - finances.network
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      - POSTGRESQL_USERNAME=${DB_USERNAME:-root}
+      - POSTGRESQL_PASSWORD=${DB_PASSWORD:-root}
+      - POSTGRESQL_DATABASE=${DB_NAME:-development}
+
+  redis:
+    image: bitnami/redis:latest
+    container_name: finances.redis
+    tty: true
+    env_file: .env.local
+    volumes:
+      - finances.redis:/bitnami/redis/data
+    networks:
+      - finances.network
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-redis}
+      - ALLOW_EMPTY_PASSWORD=no
